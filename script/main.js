@@ -1,4 +1,5 @@
 
+
 async function getApiCards() {
     const data = await fetch("https://dummyjson.com/products");
     const response = await data.json();
@@ -29,22 +30,32 @@ function addCards(data) {
                         </div>
                         <div class="availabilityStatus">${item.availabilityStatus}</div>
                     </div>
+                    <div class ="reviews-content">
+                    <div class="swiper-icons">
+                    <i class="fa-solid fa-arrow-left pagination-left"></i>
+                    <div class="swiper-pagination-bullets">
+                    <span class= "swiper-pagination-bullet"></span>
+                    <span class= "swiper-pagination-bullet"></span>
+                    <span class= "swiper-pagination-bullet"></span>
+                    </div>
+                    <i class="fa-solid fa-arrow-right pagination-right"></i>
+                    </div>
                     <div class="swiper reviews">
                     <div class="swiper-wrapper">
                     ${item["reviews"].map((review) => {
-                    `<div class="swiper-slide">
+                    return `<div class="swiper-slide">
                         <div class="card">
                             <h3>${review.reviewerName}</h3>
                             <h4>${review.reviewerEmail}</h4>
-                            <span class="rating">${review.rating}</span>
-                            <p class="comment">${review.comment}</p>
-                            <span class="date">${review.date}</span>
+                            <span class="rating"><span>Rating :</span> ${review.rating}</span>
+                            <p class="comment"><span>Comment : </span>${review.comment}</p>
+                            <span class="date"><span>Date : </span>${review.date}</span>
                         </div>
-                    </div>`
+                    </div>`;
                     }).join(" ")}
                     
                     </div>
-                    </div>
+                    </div></div>
                     <div class="product_card_add">
                         <button>Add To Cart</button>
                     </div>
@@ -55,5 +66,53 @@ function addCards(data) {
 }
 
 
-getApiCards();
 
+
+function initializeSwiper() {
+    document.querySelectorAll(".swiper").forEach((swiper) => {
+        new Swiper(swiper, {
+            speed: 800,
+            spaceBetween: 50,
+            slidesPerView: "auto",
+            loop: true,
+            // autoplay: {
+            //     delay: 2500,
+            // },
+            pagination : {
+                el: swiper.closest(".product_card").querySelector(".swiper-pagination-bullets"),
+            },
+            navigation : {
+                nextEl : ".pagination-right",
+                prevEl : ".pagination-left",
+            },
+            breakpoints: {
+                0: {
+                    slidesPerView: "auto",
+                    spaceBetween: 50,
+                },
+                600: {
+                    slidesPerView: "auto",
+                    spaceBetween: 50,
+                },
+                1024: {
+                    slidesPerView: "auto",
+                    spaceBetween: 50,
+                },
+                1440: {
+                    slidesPerView: "auto",
+                    spaceBetween: 50,
+                },
+                1920: {
+                    slidesPerView: "auto",
+                    spaceBetween: 50,
+                },
+            },
+        });
+    })
+
+}
+async function main() {
+    await getApiCards();
+    initializeSwiper();
+}
+main();
